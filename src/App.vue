@@ -1,49 +1,136 @@
 <template>
-  <div id="app">
-    <menu-bar></menu-bar>
-    <main>
-      <!-- <img src="./assets/logo.png" alt="Vue.js PWA"> -->
-      <router-view></router-view>
-    </main>
-  </div>
+    <div :class="{ offline: offline }">
+      <router-view name="header"></router-view>
+
+      <main class="mdc-top-app-bar--fixed-adjust">
+        <!-- <div class="offline-bar">
+          <span>Keine Internetverbindung</span>
+        </div> -->
+
+        <transition :name="transitionName">
+          <router-view></router-view>
+        </transition>
+
+      </main>
+
+      <mdc-snackbar></mdc-snackbar>
+
+    </div>
 </template>
 
 <script>
-import MenuBar from './components/MenuBar'
 
 export default {
   name: 'app',
-  components: { MenuBar }
+  props: {
+    title: {
+      type: String,
+      default: 'Rezeptsammlung'
+    }
+  },
+  data() {
+    return {
+      transitionName: 'fade',
+      offline: false
+    }
+  },
+  computed: {
+    isHome: function() {
+      return this.$route.name === 'home'
+    }
+  },
+  watch: {
+    '$route'(to, from) {
+      let toDepth = to.path.split('/').length
+      let fromDepth = from.path.split('/').length
+      this.transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left'
+      console.log({
+        'to': to,
+        'from': from,
+        'transitionName': this.transitionName
+      })
+    }
+  },
+  methods: {
+    goBack: function() {
+      this.$router.back()
+    },
+    updateOnlineStatus: function() {
+      this.offline = !navigator.onLine
+      let message = this.offline ? 'Keine Internetverbindung' : 'Es gibt wieder Netz!'
+      this.$root.$emit('show-snackbar', {
+        message: message,
+        timeout: 5500
+      })
+    }
+  },
+  created() {
+    window.addEventListener('online', this.updateOnlineStatus)
+    window.addEventListener('offline', this.updateOnlineStatus)
+    this.updateOnlineStatus()
+
+    // this.$router.beforeResolve((to, from, next) => {
+    //   const toDepth = to.path.split('/').length
+    //   const fromDepth = from.path.split('/').length
+    //   this.transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left'
+    //   console.log({
+    //     'to': to,
+    //     'from': from,
+    //     'next': next,
+    //     'transitionName': this.transitionName
+    //   })
+    //   next()
+    // })
+  }
+
 }
 </script>
 
 <style lang="scss">
-@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
-@import url('https://fonts.googleapis.com/css?family=Roboto');
+@import "@material/elevation/mdc-elevation";
+@import "@material/top-app-bar/mdc-top-app-bar";
 
-body {
-  margin: 0;
-  background-color: #e2e2e2;
-  font-family: 'Roboto', 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  // color: #2c3e50;
-  color: #757575;
-  line-height: 20px;
-  height: 100vh;
+@import "theme";
+
+html, body {
+  height: 100%;
+  background-color: #d1cedd;
+  background-color: var(--mdc-theme-background, #d1cedd);
 }
-
 #app {
-  display: flex;
-  flex-direction: column;
   height: 100%;
   max-height: 100%;
 }
-
-main {
-  text-align: center;
-  overflow-y: auto;
-  overflow-x: hidden;
+.menu-bar {
+  z-index: 999;
+  @include mdc-elevation(4);
 }
+.offline-bar {
+  position: fixed;
+  // top: 56px;
+  // display: flex;
+  top: calc(56px - 48px);
+  display: none;
+  left: 0;
+  right: 0;
+  height: 48px;
+  z-index: 998;
+  @include mdc-top-app-bar-fill-color-accessible($theme-warning);
+  @include mdc-elevation(4);
+  @include mdc-typography(headline6);
+  text-align: center;
+  flex-direction: column;
+  justify-content: center;
+}
+.offline {
+  .menu-bar {
+    @include mdc-elevation(2);
+  }
+  .offline-bar {
+    top: 56px;
+    display: flex;
+  }
+}
+
 
 </style>

@@ -1,0 +1,24 @@
+// @import "offline/_normalize.scss";
+
+// $mdc-theme-primary: #413832;
+// $mdc-theme-secondary: #867d7e;
+// $mdc-theme-background: #d1cedd;
+$mdc-theme-primary: #dd2c00;
+$mdc-theme-secondary: #2ecc71;
+// $mdc-theme-background: #d1cedd;
+$mdc-theme-background: #f2f2f2;
+
+$theme-warning: #a30000;
+
+*, *::after, *::before {
+  box-sizing: border-box;
+}
+
+li {
+  list-style: none;
+}
+.mdc-text-field__input {
+  box-sizing: content-box;
+}
+
+@import "vue-mdc-adapter/dist/styles";

@@ -8,12 +8,18 @@
     "dev": "node build/dev-server.js",
     "start": "node build/dev-server.js",
     "build": "node build/build.js",
-    "lint": "eslint --ext .js,.vue src"
+    "lint": "eslint --ext .js,.vue src",
+    "serve-production": "http-server dist -p 8888"
   },
   "dependencies": {
+    "firebase": "^5.0.4",
+    "material-components-web": "^0.35.2",
+    "moment": "^2.22.1",
     "normalize.css": "^8.0.0",
     "vue": "^2.5.2",
-    "vue-router": "^3.0.1"
+    "vue-mdc-adapter": "^0.15.3",
+    "vue-router": "^3.0.1",
+    "vuefire": "^2.0.0-alpha.11"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.5",
@@ -45,6 +51,7 @@
     "friendly-errors-webpack-plugin": "^1.6.1",
     "html-webpack-plugin": "^2.30.1",
     "http-proxy-middleware": "^0.17.4",
+    "http-server": "^0.11.1",
     "node-sass": "^4.9.0",
     "opn": "^5.1.0",
     "optimize-css-assets-webpack-plugin": "^3.2.0",
