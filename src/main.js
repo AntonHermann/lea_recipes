@@ -8,6 +8,7 @@ import firebase from 'firebase/app'
 import 'firebase/firestore'
 import VueMDCAdapter from 'vue-mdc-adapter'
 import './theme.scss'
+import VShowSlide from 'v-show-slide'
 
 Vue.config.productionTip = false
 
@@ -42,6 +43,7 @@ db.enablePersistence()
   })
 
 Vue.use(VueMDCAdapter)
+Vue.use(VShowSlide)
 
 /* eslint-disable no-new */
 new Vue({

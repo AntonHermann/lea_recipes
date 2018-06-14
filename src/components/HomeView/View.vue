@@ -17,9 +17,7 @@
     </mdc-drawer-list>
   </mdc-drawer>
   <section class="recipe-overview">
-    <h2>{{ active_filters }}</h2>
-    <h2>{{ filters.difficulty.value2 }}</h2>
-    <div class="recipes">
+    <transition-group tag="div" name="list" class="recipes">
       <mdc-card class="recipe" v-for="list in lists" :key="list.imageUrl">
         <mdc-card-primary-action :to="'/details/' + list.id">
 
@@ -27,13 +25,11 @@
 
           <mdc-card-header :title="list.title"></mdc-card-header>
 
-          <mdc-list-divider></mdc-list-divider>
-
         </mdc-card-primary-action>
         <div class="meta">
           <span class="meta-item meta-item-duration">
             <i class="material-icons">timelapse</i>
-            <span class="meta-text">{{ list.duration }}</span>
+            <span class="meta-text">{{ list.duration }}min</span>
           </span>
           <span class="meta-item meta-item-difficulty">
             <i class="material-icons">fitness_center</i>
@@ -43,12 +39,12 @@
             <i class="material-icons">access_time</i>
             <span class="meta-text">{{ list.createtAt | formatDate }}</span>
           </span>
-          <!-- <span class="meta-item meta-item-fav"> -->
+          <span class="meta-item meta-item-fav">
             <fav-button :id="list.id" :status="list.fav"></fav-button>
-          <!-- </span> -->
+          </span>
         </div>
       </mdc-card>
-    </div>
+    </transition-group>
     <mdc-fab icon="add" fixed to="/post"></mdc-fab>
   </section>
 </div>
@@ -67,48 +63,27 @@ export default {
         name: 'detail',
         params: { id: id }
       })
-    },
-    toggleDetails(filter, event) {
-      let tagname = event.target.tagName
-      let blocked = ['INPUT', 'LABEL', 'SPAN']
-      if (!blocked.includes(tagname)) {
-        filter.showDetails = !filter.showDetails
-      } else {
-        event.preventDefault()
-      }
-      console.log('toggle', tagname, filter, event)
     }
   },
   data() {
     return {
-      testValue: true,
-      lists: [],
-      showFilters: false,
+      lists_raw: [],
       filters: {
         'duration': {
-          title: 'Zeitaufwand',
-          icon: 'timelapse',
           active: false,
-          value: '30',
-          showDetails: true
+          value: '30'
         },
         'difficulty': {
-          title: 'Schwierigkeit',
-          icon: 'fitness_center',
-          active: true,
+          active: false,
           value: {
             easy: true,
             normal: true,
             hard: true
-          },
-          showDetails: true
+          }
         },
         'fav': {
-          title: 'Nur Favoriten',
-          icon: 'star',
           active: false,
-          value: true,
-          showDetails: true
+          value: true
         }
       }
     }
@@ -123,13 +98,34 @@ export default {
           af[f] = (cur.value)
         }
       }
-      console.log('af', af)
       return af
+    },
+    lists() {
+      let fi = this.filters
+      let filterFunc = (e) => {
+        if (fi.duration.active) {
+          let maxDur = parseInt(fi.duration.value)
+          console.log('maxDur', maxDur, e.duration)
+          if (maxDur && maxDur < e.duration) { return false }
+        }
+        if (fi.difficulty.active) {
+          let v = fi.difficulty.value
+          if (v.easy || v.normal || v.hard) {
+            // at least one has to be true
+            if (v[e.difficulty] === false) { return false }
+          }
+        }
+        if (fi.fav.active) {
+          if (!e.fav) { return false }
+        }
+        return true
+      }
+      return this.lists_raw.filter(filterFunc)
     }
   },
   firestore() {
     return {
-      lists: db.collection('recipes').orderBy('createtAt')
+      lists_raw: db.collection('recipes').orderBy('createtAt')
     }
   },
   filters: {
@@ -160,102 +156,88 @@ export default {
     @include mdc-rtl-reflexive-box(border, right, 1px solid #e4e4e4);
     @include mdc-rtl-reflexive-position(left, 0);
 
-    .recipe-filter {
-      .mdc-list-item__graphic {
-        margin-right: 16px;
-      }
-      .filter-title {
-        flex-grow: 1;
-      }
+    .filter-list {
+      display: flex;
+      flex-direction: column;
     }
   }
 }
 
-.recipe-filter2 {
-  height: auto;
-  display: flex;
-  flex-direction: column;
-
-  .recipe-filter--top-row {
-    display: flex;
-    flex-direction: row;
-    height: 48px;
-    align-items: center;
-    justify-content: flex-start;
-    width: 100%;
-
-    i.material-icons {
-      margin-right: 16px;
-    }
-    .recipe-filter--title {
-      flex-grow: 1;
-    }
-  }
-  .recipe-filter--details {
-    padding-bottom: 12px;
-    width: 100%;
-  }
-}
-
-.filter-list {
-  display: flex;
-  flex-direction: column;
-}
 
 .recipe-overview {
   flex-grow: 1;
-}
 
-.recipe {
-  margin: 16px;
-
-  .meta {
-    font-size: 1rem;
-    line-height: 1.5rem;
-    color: rgba(0, 0, 0, 0.87);
-    color: var(--mdc-theme-text-primary-on-light, rgba(0, 0, 0, 0.87));
-
-    padding: 7px 12px;
-    margin: 4px;
-    padding: 8px 16px;
-
-    .meta-item {
-      margin-right: 32px;
-      &:last-of-type {
-        margin-right: 0;
-      }
-
-      .material-icons {
-        width: 20px;
-        height: 20px;
-        font-size: 20px;
-        vertical-align: middle;
-        display: inline-block;
-        margin: -4px 4px -4px -4px;
-        white-space: nowrap;
-      }
-      .meta-text {
-        line-height: 17px;
-        white-space: nowrap;
-      }
-    }
-  }
-  .mdc-card__media-content {
+  .recipes {
+    padding: 16px;
     display: flex;
-    flex-direction: column-reverse;
-    .mdc-card-action-icons {
-      .mdc-icon-toggle {
-        margin-bottom: -9px;
-        background-color: rgba(255, 255, 255, 0.7);
-        background-color: white;
-        border-top-left-radius: 2px;
-        border-top-right-radius: 2px;
-        &::before, &::after {
-          border-radius: 0;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    .recipe {
+      margin-bottom: 16px;
+
+      &.list-enter-active, &.list-leave-active {
+        transition: all 0.5s;
+      }
+      &.list-enter, &.list-leave-to {
+        opacity: 0;
+        transform: translateX(30px);
+      }
+
+      &>a.mdc-card-primary-action {
+        border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+      }
+      .mdc-card-header {
+        padding: 16px;
+      }
+
+      .meta {
+        font-size: 1rem;
+        line-height: 1.5rem;
+        color: rgba(0, 0, 0, 0.87);
+        color: var(--mdc-theme-text-primary-on-light, rgba(0, 0, 0, 0.87));
+
+        margin: 4px;
+        padding: 8px 16px;
+
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+
+        .meta-item {
+          white-space: nowrap;
+          margin-right: 32px;
+          &:last-of-type {
+            margin-right: 0;
+          }
+
+          &>.material-icons {
+            width: 20px;
+            height: 20px;
+            font-size: 20px;
+            vertical-align: middle;
+            display: inline-block;
+            margin: -4px 4px -4px -4px;
+            white-space: nowrap;
+          }
+          .meta-text {
+            line-height: 17px;
+            white-space: nowrap;
+          }
+
+          &.meta-item-fav .mdc-icon-toggle {
+            padding: 0;
+            height: 24px;
+            width: 24px;
+            --mdc-ripple-fg-scale: 3 !important;
+          }
         }
       }
-      .media-icon-fav {
-        color: orange;
+      .mdc-card__media-content {
+        display: flex;
+        flex-direction: column-reverse;
       }
     }
   }
