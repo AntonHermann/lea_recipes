@@ -17,16 +17,24 @@
     </mdc-drawer-list>
   </mdc-drawer>
   <section class="recipe-overview">
-    <transition-group tag="div" name="list" class="recipes">
-      <mdc-card class="recipe" v-for="list in lists" :key="list.imageUrl">
+    <div class="mdc-layout-grid">
+    <transition-group tag="div" name="list" class="recipes mdc-layout-grid__inner">
+      <mdc-layout-cell
+        v-for="list in lists"
+        :key="list.imageUrl"
+      >
+      <mdc-card
+        class="recipe"
+      >
         <mdc-card-primary-action :to="'/details/' + list.id">
 
           <mdc-card-media :src="list.imageUrl"></mdc-card-media>
 
-          <mdc-card-header :title="list.title"></mdc-card-header>
+          <!-- <mdc-card-header class="mdc-typography--headline6" :title="list.title"></mdc-card-header> -->
+          <mdc-title class="recipe-title" v-html="formatTitle(list.title)"></mdc-title>
 
         </mdc-card-primary-action>
-        <div class="meta">
+        <div class="meta" v-responsive="{ small: el => el.width <= 450 }">
           <span class="meta-item meta-item-duration">
             <i class="material-icons">timelapse</i>
             <span class="meta-text">{{ list.duration }}min</span>
@@ -44,7 +52,9 @@
           </span>
         </div>
       </mdc-card>
+      </mdc-layout-cell>
     </transition-group>
+    </div>
     <mdc-fab icon="add" fixed to="/post"></mdc-fab>
   </section>
 </div>
@@ -63,6 +73,15 @@ export default {
         name: 'detail',
         params: { id: id }
       })
+    },
+    formatTitle(t) {
+      let split = t.split(' ')
+      let len = split.length
+      let halfLen = Math.ceil(len / 2)
+      let leftSide = split.slice(0, halfLen).join(' ')
+      let rightSide = split.slice(halfLen, len).join(' ')
+      console.log(['formatTitle', leftSide, rightSide])
+      return '<span>' + leftSide + '</span> <span>' + rightSide + '</span>'
     }
   },
   data() {
@@ -133,6 +152,15 @@ export default {
       // d is a firestore timestamp now
       let date = d.toDate()
       return moment(date).locale('de').fromNow()
+    // },
+    // formatTitle(t) {
+    //   let split = t.split(' ')
+    //   let len = split.length
+    //   let halfLen = Math.ceil(len / 2)
+    //   let leftSide = split.slice(0, halfLen).join(' ')
+    //   let rightSide = split.slice(halfLen, len).join(' ')
+    //   console.log(['formatTitle', leftSide, rightSide])
+    //   return '<span>' + leftSide + '</span><span>' + rightSide + '</span>'
     }
   },
   components: {
@@ -168,11 +196,11 @@ export default {
   flex-grow: 1;
 
   .recipes {
-    padding: 16px;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
+    // padding: 16px;
+    // display: flex;
+    // flex-direction: row;
+    // flex-wrap: wrap;
+    // justify-content: center;
 
     .recipe {
       margin-bottom: 16px;
@@ -191,6 +219,12 @@ export default {
       .mdc-card-header {
         padding: 16px;
       }
+      .recipe-title {
+        margin: 16px;
+        span {
+          white-space: nowrap;
+        }
+      }
 
       .meta {
         font-size: 1rem;
@@ -205,6 +239,10 @@ export default {
         flex-wrap: wrap;
         align-items: center;
         justify-content: space-between;
+
+        &.small {
+          flex-direction: row;
+        }
 
         .meta-item {
           white-space: nowrap;

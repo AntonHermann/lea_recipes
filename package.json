@@ -19,6 +19,7 @@
     "v-show-slide": "^1.5.0",
     "vue": "^2.5.2",
     "vue-mdc-adapter": "^0.15.3",
+    "vue-responsive-components": "^0.2.3",
     "vue-router": "^3.0.1",
     "vuefire": "^2.0.0-alpha.11"
   },
