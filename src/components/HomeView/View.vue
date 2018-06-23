@@ -65,6 +65,7 @@ import { db } from '../../main'
 import moment from 'moment'
 import FavButton from '../FavButton.vue'
 import DrawerFilter from '../DrawerFilter.vue'
+import { ResponsiveDirective } from 'vue-responsive-components'
 
 export default {
   methods: {
@@ -166,6 +167,9 @@ export default {
   components: {
     FavButton,
     DrawerFilter
+  },
+  directives: {
+    responsive: ResponsiveDirective
   }
 }
 </script>
