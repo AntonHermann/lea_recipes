@@ -10,9 +10,12 @@
     </li>
     <li>
       <h2>Schwierigkeitsgrad</h2>
-      <mdc-radio dense v-model="difficulty" label="Simpel" name="difficulty" />
+      <!-- <mdc-radio dense v-model="difficulty" label="Simpel" name="difficulty" />
       <mdc-radio dense v-model="difficulty" label="Normal" name="difficulty" />
-      <mdc-radio dense v-model="difficulty" label="Schwer" name="difficulty" />
+      <mdc-radio dense v-model="difficulty" label="Schwer" name="difficulty" /> -->
+      <label>Simpel: <input type="radio" v-model="difficulty" name="difficulty" /></label>
+      <label>Normal: <input type="radio" v-model="difficulty" name="difficulty" /></label>
+      <label>Schwer: <input type="radio" v-model="difficulty" name="difficulty" /></label>
     </li>
     <li>
       <h2>prepTime</h2>

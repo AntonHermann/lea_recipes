@@ -1,7 +1,9 @@
 <template>
-    <mdc-card class="content">
-      <mdc-card-media :src="cur.imageUrl">
-        <mdc-card-actions class="media-icons">
+    <!-- <mdc-card class="content"> -->
+    <div class="content card">
+      <!-- <mdc-card-media :src="cur.imageUrl"> -->
+      <div class="card-media">
+        <!-- <mdc-card-actions class="media-icons">
           <mdc-card-action-icons>
             <mdc-icon-toggle
               class="media-icon-fav"
@@ -11,11 +13,13 @@
               toggle-off="star_border">
             </mdc-icon-toggle>
           </mdc-card-action-icons>
-        </mdc-card-actions>
-      </mdc-card-media>
-      <mdc-card-header :title="cur.title">
-      </mdc-card-header>
-      <mdc-card-text>
+        </mdc-card-actions> -->
+      <!-- </mdc-card-media> -->
+      </div>
+      <!-- <mdc-card-header :title="cur.title">
+      </mdc-card-header> -->
+      <h1>{{ cur.title }}</h1>
+      <!-- <mdc-card-text>
         <ul>
           <li v-for="ingredient in cur.ingredients" :key="ingredient.name">
             {{ ingredient.amount }} {{ ingredient.unit }} : {{ ingredient.name }}
@@ -24,8 +28,9 @@
       </mdc-card-text>
       <mdc-card-text>
         {{ cur.instructions }}
-      </mdc-card-text>
-    </mdc-card>
+      </mdc-card-text> -->
+    <!-- </mdc-card> -->
+    </div>
 </template>
 
 <script>

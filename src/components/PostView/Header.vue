@@ -1,5 +1,5 @@
 <template>
-  <mdc-top-app-bar
+  <!-- <mdc-top-app-bar
     fixed
     title="Neues Rezept"
     class="menu-bar"
@@ -7,7 +7,10 @@
     icon="close"
   >
     <mdc-top-app-bar-action event="confirm-changes" icon="done"></mdc-top-app-bar-action>
-  </mdc-top-app-bar>
+  </mdc-top-app-bar> -->
+  <div class="top-app-bar">
+    Neues Rezept
+  </div>
 </template>
 
 <script>
@@ -27,6 +30,6 @@ export default {
 
 .menu-bar {
   z-index: 999;
-  @include mdc-elevation(4);
+  // FIXME: @include mdc-elevation(4);
 }
 </style>

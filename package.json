@@ -12,13 +12,13 @@
     "serve-production": "http-server dist -p 8888"
   },
   "dependencies": {
+    "@material/elevation": "^0.36.1",
     "firebase": "^5.0.4",
     "material-components-web": "^0.35.2",
     "moment": "^2.22.1",
     "normalize.css": "^8.0.0",
     "v-show-slide": "^1.5.0",
     "vue": "^2.5.2",
-    "vue-mdc-adapter": "^0.15.3",
     "vue-responsive-components": "^0.2.3",
     "vue-router": "^3.0.1",
     "vuefire": "^2.0.0-alpha.11"

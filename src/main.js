@@ -6,7 +6,6 @@ import router from './router'
 import VueFire from 'vuefire'
 import firebase from 'firebase/app'
 import 'firebase/firestore'
-import VueMDCAdapter from 'vue-mdc-adapter'
 import './theme.scss'
 import VShowSlide from 'v-show-slide'
 import { ResponsiveDirective } from 'vue-responsive-components'
@@ -43,7 +42,6 @@ db.enablePersistence()
     // }
   })
 
-Vue.use(VueMDCAdapter)
 Vue.use(VShowSlide)
 Vue.use(ResponsiveDirective)
 

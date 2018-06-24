@@ -1,21 +1,17 @@
 <template>
-    <div :class="{ offline: offline }">
-      <router-view name="header"></router-view>
+  <div :class="{ offline: offline }">
+    <router-view name="header"></router-view>
 
-      <main class="mdc-top-app-bar--fixed-adjust">
-        <!-- <div class="offline-bar">
-          <span>Keine Internetverbindung</span>
-        </div> -->
+    <main class="mdc-top-app-bar--fixed-adjust">
 
-        <transition :name="transitionName">
-          <router-view></router-view>
-        </transition>
+      <transition :name="transitionName">
+        <router-view></router-view>
+      </transition>
 
-      </main>
+    </main>
 
-      <mdc-snackbar></mdc-snackbar>
-
-    </div>
+    <div class="snackbar todo">snackbar</div>
+  </div>
 </template>
 
 <script>
@@ -87,8 +83,8 @@ export default {
 </script>
 
 <style lang="scss">
-@import "@material/elevation/mdc-elevation";
-@import "@material/top-app-bar/mdc-top-app-bar";
+// FIXME: @import "@material/elevation/mdc-elevation";
+// FIXME: @import "@material/top-app-bar/mdc-top-app-bar";
 
 @import "theme";
 
@@ -103,7 +99,7 @@ html, body {
 }
 .menu-bar {
   z-index: 999;
-  @include mdc-elevation(4);
+  // FIXME: @include mdc-elevation(4);
 }
 .offline-bar {
   position: fixed;
@@ -115,16 +111,16 @@ html, body {
   right: 0;
   height: 48px;
   z-index: 998;
-  @include mdc-top-app-bar-fill-color-accessible($theme-warning);
-  @include mdc-elevation(4);
-  @include mdc-typography(headline6);
+  // FIXME: @include mdc-top-app-bar-fill-color-accessible($theme-warning);
+  // FIXME: @include mdc-elevation(4);
+  // FIXME: @include mdc-typography(headline6);
   text-align: center;
   flex-direction: column;
   justify-content: center;
 }
 .offline {
   .menu-bar {
-    @include mdc-elevation(2);
+    // FIXME: @include mdc-elevation(2);
   }
   .offline-bar {
     top: 56px;

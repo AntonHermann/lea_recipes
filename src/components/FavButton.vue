@@ -1,11 +1,12 @@
 <template>
-  <mdc-icon-toggle
+  <!-- <mdc-icon-toggle
     class="media-icon-fav"
     :value="status"
     v-on:input="toggleFav"
     toggle-on="star"
     toggle-off="star_border">
-  </mdc-icon-toggle>
+  </mdc-icon-toggle> -->
+  <div class="media-icon-fav">FAV-TOGGLE</div>
 </template>
 
 <script>

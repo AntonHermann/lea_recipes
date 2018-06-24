@@ -1,5 +1,8 @@
 <template>
-  <mdc-top-app-bar fixed title="Rezept" class="menu-bar" @click="goBack" icon="arrow_back"></mdc-top-app-bar>
+  <!-- <mdc-top-app-bar fixed title="Rezept" class="menu-bar" @click="goBack" icon="arrow_back"></mdc-top-app-bar> -->
+  <div class="top-app-bar">
+    Rezept
+  </div>
 </template>
 
 <script>
@@ -18,6 +21,6 @@ export default {
 
 .menu-bar {
   z-index: 999;
-  @include mdc-elevation(4);
+  // FIXME: @include mdc-elevation(4);
 }
 </style>

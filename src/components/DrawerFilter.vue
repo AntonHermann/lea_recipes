@@ -1,5 +1,5 @@
 <template>
-  <mdc-drawer-item class="recipe-filter" @click="toggleDetails">
+  <li class="recipe-filter" @click="toggleDetails">
     <div class="recipe-filter--top-row">
       <i class="material-icons mdc-list-item__graphic" aria-hidden="true">
         {{ icon }}
@@ -7,12 +7,13 @@
       <div class="recipe-filter--title">
         {{ title }}
       </div>
-      <mdc-switch v-model="active" />
+      <!-- <mdc-switch v-model="active" /> -->
+      <div>SWITCH</div>
     </div>
     <div class="recipe-filter--details" v-show-slide="showDetails" v-if="$slots.default">
       <slot />
     </div>
-  </mdc-drawer-item>
+  </li>
 </template>
 
 <script>
@@ -66,6 +67,7 @@ export default {
     align-items: center;
     justify-content: flex-start;
     width: 100%;
+    padding: 0 16px;
 
     i.material-icons {
       margin-right: 16px;

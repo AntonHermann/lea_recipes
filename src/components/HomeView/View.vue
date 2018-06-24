@@ -1,39 +1,53 @@
 <template>
 <div class="page-layout-container">
-  <mdc-drawer toggle-on="toggle-drawer" class="page-drawer" persistent>
-    <mdc-drawer-list>
+  <page-drawer toggle-on="nav">
+    <ul class="filter-list">
+      <h2 class="drawer-header">
+        Filter auswählen
+      </h2>
       <drawer-filter title="Zeitaufwand" icon="timelapse" v-model="filters.duration.active">
-        <mdc-textfield v-model="filters.duration.value" label="abc" type="number" />
+        <!-- <mdc-textfield v-model="filters.duration.value" label="abc" type="number" /> -->
+        <input v-model="filters.duration.value" placeholder="abc" type="number" />
       </drawer-filter>
       <drawer-filter title="Schwierigkeit" icon="fitness_center" v-model="filters.difficulty.active">
-        <div class="filter-list">
-          <mdc-checkbox v-model="filters.difficulty.value.easy" label="simpel" />
+        <!-- <div class="filter-list"> -->
+        <div>
+          <!-- <mdc-checkbox v-model="filters.difficulty.value.easy" label="simpel" />
           <mdc-checkbox v-model="filters.difficulty.value.normal" label="normal" />
-          <mdc-checkbox v-model="filters.difficulty.value.hard" label="schwer" />
+          <mdc-checkbox v-model="filters.difficulty.value.hard" label="schwer" /> -->
+          <input type="checkbox" v-model="filters.difficulty.value.easy" />
+          <input type="checkbox" v-model="filters.difficulty.value.normal" />
+          <input type="checkbox" v-model="filters.difficulty.value.hard" />
         </div>
       </drawer-filter>
       <drawer-filter title="Nur Favoriten" icon="star" v-model="filters.fav.active">
       </drawer-filter>
-    </mdc-drawer-list>
-  </mdc-drawer>
+    </ul>
+  </page-drawer>
+
   <section class="recipe-overview">
     <div class="mdc-layout-grid">
     <transition-group tag="div" name="list" class="recipes mdc-layout-grid__inner">
-      <mdc-layout-cell
+      <!-- <mdc-layout-cell -->
+      <div class="layout-cell"
         v-for="list in lists"
         :key="list.imageUrl"
       >
-      <mdc-card
-        class="recipe"
+      <!-- <mdc-card -->
+      <div
+        class="recipe card"
       >
-        <mdc-card-primary-action :to="'/details/' + list.id">
+        <!-- <mdc-card-primary-action :to="'/details/' + list.id"> -->
+        <div class="primary-action">
 
-          <mdc-card-media :src="list.imageUrl"></mdc-card-media>
+          <!-- <mdc-card-media :src="list.imageUrl"></mdc-card-media> -->
+          <div class="card-media">{{ list.imageUrl }}</div>
 
-          <!-- <mdc-card-header class="mdc-typography--headline6" :title="list.title"></mdc-card-header> -->
-          <mdc-title class="recipe-title" v-html="formatTitle(list.title)"></mdc-title>
+          <!-- <mdc-title class="recipe-title" v-html="formatTitle(list.title)"></mdc-title> -->
+          <div class="recipe-title" v-html="formatTitle(list.title)"></div>
 
-        </mdc-card-primary-action>
+        <!-- </mdc-card-primary-action> -->
+        </div>
         <div class="meta" v-responsive="{ small: el => el.width <= 450 }">
           <span class="meta-item meta-item-duration">
             <i class="material-icons">timelapse</i>
@@ -51,11 +65,14 @@
             <fav-button :id="list.id" :status="list.fav"></fav-button>
           </span>
         </div>
-      </mdc-card>
-      </mdc-layout-cell>
+      <!-- </mdc-card> -->
+      </div>
+      <!-- </mdc-layout-cell> -->
+      </div>
     </transition-group>
     </div>
-    <mdc-fab icon="add" fixed to="/post"></mdc-fab>
+    <!-- <mdc-fab icon="add" fixed to="/post"></mdc-fab> -->
+    <div class="fab">add</div>
   </section>
 </div>
 </template>
@@ -66,6 +83,7 @@ import moment from 'moment'
 import FavButton from '../FavButton.vue'
 import DrawerFilter from '../DrawerFilter.vue'
 import { ResponsiveDirective } from 'vue-responsive-components'
+import PageDrawer from '../PageDrawer.vue'
 
 export default {
   methods: {
@@ -166,7 +184,8 @@ export default {
   },
   components: {
     FavButton,
-    DrawerFilter
+    DrawerFilter,
+    PageDrawer
   },
   directives: {
     responsive: ResponsiveDirective
@@ -176,22 +195,21 @@ export default {
 
 <style lang="scss">
 @import "../../theme.scss";
-@import "@material/chips/mdc-chips";
-@import "@material/drawer/mdc-drawer";
+// FIXME: @import "@material/chips/mdc-chips";
+// FIXME: @import "@material/drawer/mdc-drawer";
 
 .page-layout-container {
   display: flex;
   flex-direction: row;
 
-  .page-drawer {
-    @include mdc-drawer-fill-color-accessible($mdc-theme-surface);
-    @include mdc-rtl-reflexive-box(border, right, 1px solid #e4e4e4);
-    @include mdc-rtl-reflexive-position(left, 0);
+  // .page-drawer {
+  // FIXME: @include mdc-drawer-fill-color-accessible($mdc-theme-surface);
+  // FIXME: @include mdc-rtl-reflexive-box(border, right, 1px solid #e4e4e4);
+  // FIXME: @include mdc-rtl-reflexive-position(left, 0);
 
-    .filter-list {
-      display: flex;
-      flex-direction: column;
-    }
+  .filter-list {
+    padding: 0;
+    margin: 0;
   }
 }
 
